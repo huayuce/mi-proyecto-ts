@@ -1,4 +1,15 @@
-console.log("¡Hola Mundo desde TypeScript!");
+// ==========================================
+// 1. LÓGICA DE LA INTERFAZ WEB (MÓDULO 2)
+// ==========================================
+
+// Buscamos los elementos en el HTML
+const boton = document.getElementById("btnSaludar") as HTMLButtonElement;
+const parrafo = document.getElementById("txtMensaje") as HTMLParagraphElement;
+
+// Escuchamos el evento 'click' (Como un ActionListener en Java)
+boton.addEventListener("click", () => {
+    parrafo.textContent = "¡Hola Edgar! Has presionado el botón y activado tu código TypeScript con éxito.";
+});
 
 //==========================================
 //EJEMPLO : CLASES AL ESTILO JAVA
