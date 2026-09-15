@@ -1,0 +1,169 @@
+# 📘 Bitácora de Aprendizaje: Transición de Java a TypeScript
+**Estudiante:** Edgar  
+**Enfoque:** Desarrollo Web Profesional con Bases Sólidas
+
+---
+
+## 🛠️ Módulo 1: Entorno de Desarrollo y Control de Versiones
+
+### 1. El Trío Estándar de la Industria
+*   **Node.js:** Entorno de ejecución que permite ejecutar JavaScript/TypeScript fuera del navegador y provee `npm` (gestor de paquetes).
+*   **Visual Studio Code:** Editor de código con soporte nativo avanzado para TypeScript.
+*   **Git:** Herramienta local para el control y registro de versiones del código.
+
+### 2. Estructura de Directorios Profesional
+*   **Regla de Oro:** Evitar carpetas del sistema (piden permisos de administrador) y carpetas en la nube como OneDrive o iCloud (bloquean archivos debido a la gran cantidad de datos en `node_modules`).
+*   **Ruta Recomendada (Windows):** `C:\Usuarios\TuNombre\Proyectos\mi-proyecto-ts`
+
+### 3. Comandos de Inicialización (Terminal Git Bash)
+```bash
+# 1. Inicializar el repositorio local de Git
+git init
+
+# 2. Inicializar el proyecto de Node.js (Crea el archivo package.json)
+npm init -y
+
+# 3. Instalar el compilador oficial de TypeScript como dependencia de desarrollo
+npm install typescript --save-dev
+
+# 4. Inicializar la configuración de TypeScript (Crea el archivo tsconfig.json)
+npx tsc --init
+```
+
+### 4. Filtro de Archivos (`.gitignore`)
+Para evitar subir a Git los miles de archivos pesados de dependencias o archivos traducidos automáticamente, se crea el archivo `.gitignore` en la raíz con el siguiente contenido:
+```text
+node_modules/
+*.js
+*.map
+```
+
+### 5. Configuración Inicial de Identidad en Git
+Obligatorio la primera vez en el sistema para firmar los puntos de control (commits) con las credenciales de GitHub:
+```bash
+git config --global user.email "tu-correo-github@ejemplo.com"
+git config --global user.name "TuUsuarioDeGitHub"
+```
+
+---
+
+## 🌐 Módulo 2: Interfaz Web y Conexión con el DOM
+
+### 1. Analogías Conceptuales (De Java de Escritorio a Web)
+*   **Lógica de negocio:** El archivo `.java` equivale al archivo `.ts` (TypeScript).
+*   **Interfaz Gráfica:** Las ventanas/paneles en código o XML equivalen al archivo `.html` (Estructura de la pantalla).
+*   **Compilador:** El compilador de Java (`javac`) equivale al compilador de TypeScript (`npx tsc`), el cual traduce el código seguro a JavaScript (`.js`) para que el navegador pueda entenderlo.
+*   **Entorno de ejecución:** La Máquina Virtual de Java (JVM) equivale al Navegador Web (Chrome/Edge).
+
+### 2. Configuración Clave para Entornos Web (`tsconfig.json`)
+Los navegadores locales no entienden el sistema de módulos por defecto de Node (`commonjs`). Para trabajar en la web se debe modificar la siguiente línea en el archivo de configuración:
+```json
+"module": "ES6"
+```
+
+### 3. El Archivo de Interfaz (`index.html`)
+Se define el esqueleto mediante componentes con identificadores únicos (`id`). Para enlazar el código se debe especificar que es un módulo moderno:
+```html
+<button id="btnSaludar">Saludar al Programador</button>
+<p id="txtMensaje"></p>
+
+<!-- Enlace obligatorio al JavaScript compilado al final del body -->
+<script type="module" src="index.js"></script>
+```
+
+### 4. Captura de Componentes y Eventos (`index.ts`)
+La lógica para interactuar con la pantalla debe vivir **fuera** de las clases, de forma secuencial:
+```typescript
+// 1. Mapear componentes usando 'Casteo de tipos' (as) para habilitar el autocompletado
+const boton = document.getElementById("btnSaludar") as HTMLButtonElement;
+const parrafo = document.getElementById("txtMensaje") as HTMLParagraphElement;
+
+// 2. Escuchar Eventos (Equivalente al ActionListener de Java)
+boton.addEventListener("click", () => {
+    // Uso de Comillas Invertidas (`) para interpolar variables/propiedades de forma limpia
+    parrafo.textContent = `¡Hola Mundo! Conectado con éxito.`;
+});
+```
+
+### 5. Flujo de Trabajo Diario Obligatorio
+Cada vez que se realiza un cambio en TypeScript, se debe seguir este ciclo:
+1.  **Guardar el archivo** (Facilitado activando la opción `File > Auto Save` en VS Code).
+2.  **Compilar** en la terminal: `npx tsc`
+3.  **Visualizar** levantando el servidor local mediante la extensión **Live Server** (botón `Go Live` en la barra inferior) para evadir las restricciones de seguridad del navegador.
+
+### 6. Comandos de Respaldo Local (Guardar Progreso)
+```bash
+# Registrar cambios actuales en el filtro de Git
+git add .
+
+# Confirmar el punto de control con un mensaje descriptivo
+git commit -m "Mensaje descriptivo del avance"
+```
+
+---
+
+## 🏗️ Módulo 3: Buenas Prácticas y Arquitectura Limpia
+
+### 1. Modularización (Separación de Responsabilidades)
+*   Consiste en dividir el código en múltiples archivos físicos independientes para evitar archivos gigantescos y difíciles de mantener, emulando la estructura de clases por archivo de Java.
+*   **`export`:** Palabra clave colocada antes de una clase o función para hacerla pública y visible para otros archivos del proyecto.
+*   **`import`:** Sintaxis utilizada para traer componentes exportados desde otros archivos.
+
+### 2. Implementación Técnica de Módulos Separados
+*   **Archivo de la Clase (`Persona.ts`):**
+    ```typescript
+    export interface IUsuario {
+        nombre: string;
+        edad: number;
+        correo?: string;
+    }
+
+    export class Persona implements IUsuario {
+        public nombre: string;
+        public edad: number;
+
+        constructor(nombre: string, edad: number) {
+            this.nombre = nombre;
+            this.edad = edad;
+        }
+
+        public presentar(): string {
+            return `Hola, mi nombre es ${this.nombre} y tengo ${this.edad} años.`;
+        }
+    }
+    ```
+*   **Archivo Controlador (`index.ts`):**
+    ```typescript
+    import { Persona } from "./Persona.ts";
+
+    const boton = document.getElementById("btnSaludar") as HTMLButtonElement;
+    const parrafo = document.getElementById("txtMensaje") as HTMLParagraphElement;
+
+    boton.addEventListener("click", () => {
+        const programador = new Persona("Edgar", 31);
+        parrafo.textContent = programador.presentar();
+    });
+    ```
+
+---
+
+## ⚡ Módulo 4: Herramientas de Automatización Estándar (Vite)
+
+### 1. Concepto de Bundler Moderno
+*   **Vite:** Es un empaquetador de herramientas que automatiza la compilación. Vigila tus archivos en tiempo de desarrollo y actualiza el navegador instantáneamente al guardar cambios, eliminando la necesidad de compilar manualmente con `npx tsc`.
+
+### 2. Comandos de Configuración y Ejecución
+```bash
+# 1. Instalar Vite como dependencia de desarrollo
+npm install vite --save-dev
+
+# 2. Levantar el servidor de automatización en tiempo real
+npx vite
+```
+
+### 3. Ajuste Arquitectural en el HTML para Vite
+Bajo el motor de Vite, el archivo HTML debe apuntar directamente al archivo de origen de TypeScript (`.ts`), delegando el proceso de traducción a la memoria interna del servidor de Vite:
+```html
+<!-- Modificación en index.html -->
+<script type="module" src="index.ts"></script>
+```
