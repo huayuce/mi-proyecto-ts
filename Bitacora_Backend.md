@@ -84,3 +84,17 @@ Cuando se inicializa un proyecto de NestJS dentro de otro repositorio activo, el
     # 1. Eliminar el repositorio de Git interno que genera el conflicto
     rm -rf mi-servidor-nest/.git
     ```
+---
+
+## 💾 Módulo 8: Persistencia en la Nube con Supabase y PostgreSQL
+
+### 1. El Concepto de Base de Datos en la Nube (DBaaS)
+*   **Supabase:** Plataforma moderna en la nube que provee una base de datos relacional **PostgreSQL** real y completa sin necesidad de instalaciones locales pesadas en el sistema operativo.
+*   **PostgreSQL:** Motor de base de datos relacional robusto y estándar de la industria, equivalente a los entornos corporativos donde se usa Oracle o MySQL en aplicaciones de escritorio Java.
+
+### 2. Modelado de Datos Visual vs SQL
+*   En lugar de ejecutar scripts manuales `CREATE TABLE`, se utilizó el **Table Editor** gráfico de la plataforma para mapear la entidad con tipado web estricto:
+    *   `id` (`int8`, Autoincremental, Llave Primaria).
+    *   `created_at` (`timestamp`, Fecha de sistema por defecto).
+    *   `nombre` (`text`, Homólogo al tipo `String` de Java).
+    *   `rol` (`text`, Homólogo al tipo `String` de Java).
